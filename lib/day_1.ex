@@ -39,6 +39,12 @@ defmodule AdventOfCode.Day1 do
   """
 
   def compute(input) do
-    514579
+    input
+    |> Enum.map(fn x ->
+      Enum.chunk_by(input, fn y -> x + y == 2020 end)
+      |> Enum.filter(&(is_list(&1) && length(&1) == 1))
+    end)
+    |> List.flatten()
+    |> Enum.reduce(1, &(&1 * &2))
   end
 end
