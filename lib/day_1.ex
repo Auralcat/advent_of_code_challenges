@@ -38,13 +38,22 @@ defmodule AdventOfCode.Day1 do
   to 2020; what do you get if you multiply them together?
   """
 
-  def compute(input) do
+  @sum_result 2020
+
+  def compute_for_two_numbers(input) do
+    input
+    |> Enum.map(fn x -> Enum.filter(input, fn y -> x + y == @sum_result end) end)
+    |> List.flatten()
+    |> Enum.reduce(1, &(&1 * &2))
+  end
+
+  def compute_for_three_numbers(input) do
     input
     |> Enum.map(fn x ->
-      Enum.chunk_by(input, fn y -> x + y == 2020 end)
-      |> Enum.filter(&(is_list(&1) && length(&1) == 1))
+      Enum.map(input, fn y -> Enum.filter(input, fn z -> x + y + z == @sum_result end) end)
     end)
     |> List.flatten()
+    |> Enum.uniq()
     |> Enum.reduce(1, &(&1 * &2))
   end
 end
